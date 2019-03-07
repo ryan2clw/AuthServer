@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeLogin", "SafeLogin.csproj", "{5D110300-7CBE-4C23-9BC4-F4C31BB3208D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServer", "AuthServer.csproj", "{5D110300-7CBE-4C23-9BC4-F4C31BB3208D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

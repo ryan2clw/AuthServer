@@ -41,7 +41,7 @@ namespace SafeLogin
                 options.ClientSecret = _googleClientSecret;
             });
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
-            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            string connectionString = Configuration.GetConnectionString("PostGreSQLConnection");
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             var builder = services.AddIdentityServer()
                 .AddTestUsers(Config.GetUsers())
@@ -49,14 +49,14 @@ namespace SafeLogin
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = b =>
-                        b.UseSqlServer(connectionString,
+                        b.UseNpgsql(connectionString,
                             sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
                 // this adds the operational data from DB (codes, tokens, consents)
                 .AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = b =>
-                        b.UseSqlServer(connectionString,
+                        b.UseNpgsql(connectionString,
                             sql => sql.MigrationsAssembly(migrationsAssembly));
                     // this enables automatic token cleanup. this is optional.
                     options.EnableTokenCleanup = true;
@@ -87,6 +87,7 @@ namespace SafeLogin
             app.UseStaticFiles();
             app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
+            //SeedDatabase(app);
             // MARK TO DO: Endpoint to seed database
         }
         public static void SeedDatabase(IApplicationBuilder app)
