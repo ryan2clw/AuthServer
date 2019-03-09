@@ -38,7 +38,7 @@ namespace SafeLogin
                         options.Listen(IPAddress.Any, 5002); // non-secure
 #else
                         options.Listen(IPAddress.Any, 5001, listenOptions => {
-                           listenOptions.UseHttps("/home/dotnetuser/.ssh/seniordevops.com.pfx", "T*V2s59WNEc8x");
+                           listenOptions.UseHttps("/home/dotnetuser/.ssh/seniordevops.pfx", "T*V2s59WNEc8x");
                         });
 #endif
                     })

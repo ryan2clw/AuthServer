@@ -72,7 +72,7 @@ namespace SafeLogin
             }
             else
             {
-                string _path = "/home/dotnetuser/.ssh/seniordevops.com.pfx";
+                string _path = "/home/dotnetuser/.ssh/seniordevops.pfx";
                 var x509 = new X509Certificate2(File.ReadAllBytes(_path));
                 builder.AddSigningCredential(_path);
             }
