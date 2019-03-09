@@ -72,10 +72,31 @@ namespace SafeLogin
             }
             else
             {
+                X509Store computerCaStore = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
 
+                try
+                {
+                    computerCaStore.Open(OpenFlags.ReadOnly);
+                    X509Certificate2Collection certificatesInStore = computerCaStore.Certificates;
+                    foreach (X509Certificate2 cert in certificatesInStore)
+                    {
+                        Console.WriteLine(cert.GetExpirationDateString());
+                        Console.WriteLine(cert.Issuer);
+                        Console.WriteLine(cert.GetEffectiveDateString());
+                        Console.WriteLine(cert.GetNameInfo(X509NameType.SimpleName, true));
+                        Console.WriteLine(cert.HasPrivateKey);
+                        Console.WriteLine(cert.SubjectName.Name);
+                        Console.WriteLine("-----------------------------------");
+                    }
+                }
+                finally
+                {
+                    computerCaStore.Close();
+                }
                 string _path = "/home/dotnetuser/.ssh/seniordevops.pfx";
                 var x509 = new X509Certificate2(File.ReadAllBytes(_path),"T*V2s59WNEc8x");
-                builder.AddSigningCredential(_path);
+                //builder.AddSigningCredential(_path);
+                builder.AddDeveloperSigningCredential();
             }
         }
 
