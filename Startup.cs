@@ -73,7 +73,7 @@ namespace SafeLogin
             else
             {
                 X509Store personalStore = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-                X509Certificate2 sslCert = new X509Certificate2(@"C:\TestProjects\Certificates\DummyCerts\greatsite.com.pfx");
+                X509Certificate2 sslCert = new X509Certificate2(@"/home/dotnetuser/.ssh/seniordevops.pfx");
                 try
                 {
                     personalStore.Open(OpenFlags.ReadWrite);
