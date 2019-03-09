@@ -72,26 +72,20 @@ namespace SafeLogin
             }
             else
             {
-                X509Store computerCaStore = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
-
+                X509Store personalStore = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+                X509Certificate2 sslCert = new X509Certificate2(@"C:\TestProjects\Certificates\DummyCerts\greatsite.com.pfx");
                 try
                 {
-                    computerCaStore.Open(OpenFlags.ReadOnly);
-                    X509Certificate2Collection certificatesInStore = computerCaStore.Certificates;
-                    foreach (X509Certificate2 cert in certificatesInStore)
-                    {
-                        Console.WriteLine(cert.GetExpirationDateString());
-                        Console.WriteLine(cert.Issuer);
-                        Console.WriteLine(cert.GetEffectiveDateString());
-                        Console.WriteLine(cert.GetNameInfo(X509NameType.SimpleName, true));
-                        Console.WriteLine(cert.HasPrivateKey);
-                        Console.WriteLine(cert.SubjectName.Name);
-                        Console.WriteLine("-----------------------------------");
-                    }
+                    personalStore.Open(OpenFlags.ReadWrite);
+                    personalStore.Add(sslCert);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("SSL certificate import failed: " + ex.Message);
                 }
                 finally
                 {
-                    computerCaStore.Close();
+                    personalStore.Close();
                 }
                 string _path = "/home/dotnetuser/.ssh/seniordevops.pfx";
                 var x509 = new X509Certificate2(File.ReadAllBytes(_path),"T*V2s59WNEc8x");
