@@ -13,6 +13,10 @@ using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.Extensions.Configuration;
 using IdentityServer4;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.IO;
 
 namespace SafeLogin
 {
@@ -68,7 +72,9 @@ namespace SafeLogin
             }
             else
             {
-                throw new Exception("need to configure key material");
+                string _path = "/home/dotnetuser/.ssh/seniordevops.com.pfx";
+                var x509 = new X509Certificate2(File.ReadAllBytes(_path));
+                builder.AddSigningCredential(_path);
             }
         }
 
