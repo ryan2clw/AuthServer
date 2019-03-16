@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace SafeLogin
 {
@@ -74,7 +75,7 @@ namespace SafeLogin
             {
                 try
                 {
-                    X509Certificate2 sslCert = new X509Certificate2(@"/home/dotnetuser/.ssh/seniordevops.pfx", "T*V2s59WNEc8x");
+                    X509Certificate2 sslCert = new X509Certificate2(@"/Users/ryandines/.ssh/seniordevops.pfx", "T*V2s59WNEc8x");
                     builder.AddSigningCredential(sslCert);
                 }
                 catch (Exception ex)
@@ -101,8 +102,12 @@ namespace SafeLogin
             app.UseStaticFiles();
             app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
-            //SeedDatabase(app);
-            // MARK TO DO: Endpoint to seed database
+#if !DEBUG
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+#endif
         }
         public static void SeedDatabase(IApplicationBuilder app)
         { // this will do the initial DB population
